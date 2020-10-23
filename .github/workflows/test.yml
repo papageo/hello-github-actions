@@ -43,19 +43,17 @@ jobs:
         run: echo ${{ env.RELEASE_BACKEND_EN}}
         if: ${{ env.RELEASE_BACKEND_EN}}
 
-      - name: step 0 RELEASE_FRONTEND
-        if: ${{ false }}
-        run: echo ${{ env.RELEASE_FRONTEND}} how can you run 0
+
       - name: step 00 RELEASE_FRONTEND
         run: echo ${{ env.RELEASE_FRONTEND}} how can you run 00
-        if: env.RELEASE_FRONTEND == true
-      - name: step 5 RELEASE_FRONTEND
-        if: ${{ env.RELEASE_FRONTEND == true }}
-        run: echo ${{ env.RELEASE_FRONTEND}} how can you run 1
-      - name: step 6 RELEASE_FRONTEND
-        if: ${{ (env.RELEASE_FRONTEND) }}
-        run: echo ${{ env.RELEASE_FRONTEND}} how can you run 2
-      - name: step 7 RELEASE_FRONTEND
-        if: env.RELEASE_FRONTEND
-        run: echo ${{ env.RELEASE_FRONTEND}} how can you run 3
+        if: env.RELEASE_BACKEND_APS == true
+#      - name: step 5 RELEASE_FRONTEND
+#        if: ${{ env.RELEASE_FRONTEND == true }}
+#        run: echo ${{ env.RELEASE_FRONTEND}} how can you run 1
+#      - name: step 6 RELEASE_FRONTEND
+#        if: ${{ (env.RELEASE_FRONTEND) }}
+#        run: echo ${{ env.RELEASE_FRONTEND}} how can you run 2
+#      - name: step 7 RELEASE_FRONTEND
+#        if: env.RELEASE_FRONTEND
+#        run: echo ${{ env.RELEASE_FRONTEND}} how can you run 3
 
