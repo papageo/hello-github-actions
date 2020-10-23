@@ -1,0 +1,77 @@
+name: Releases CI
+# ------------------------------------------------------------------------------- #
+# - release_backend_core  tag pushed  --> backend core image pushed to azure      #
+# - release_backend_aps   tag pushed  --> backend aps image pushed to azure       #
+# - release_backend_en    tag pushed  --> backend en image pushed to azure        #
+# - release_backend       tag pushed  --> all backend images pushed to azure      #
+# - release_frontend      tag pushed  --> frontend image pushed to azure          #
+# - release               tag pushed  --> all 5 images pushed to azure            #
+# ------------------------------------------------------------------------------- #
+
+on:
+  push:
+    tags:
+      - 'release_backend_core'
+      - 'release_backend_en'
+      - 'release_backend_aps'
+      - 'release_backend'
+      - 'release_frontend'
+      - 'release'
+
+env:
+  AZURE_CONTAINER_REGISTRY: dbsdockerregistry.azurecr.io
+  AZURE_REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+  AZURE_REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+  RELEASE_FRONTEND: ${{ (github.ref == 'refs/tags/release') || (github.ref == 'refs/tags/release_frontend') }}
+  RELEASE_BACKEND_CORE: ${{ (github.ref == 'refs/tags/release') || (github.ref == 'refs/tags/release_backend') || (github.ref == 'refs/tags/release_backend_core') }}
+  RELEASE_BACKEND_EN: ${{ (github.ref == 'refs/tags/release') || (github.ref == 'refs/tags/release_backend') || (github.ref == 'refs/tags/release_backend_en') }}
+  RELEASE_BACKEND_APS: ${{ (github.ref == 'refs/tags/release') || (github.ref == 'refs/tags/release_backend') || (github.ref == 'refs/tags/release_backend_aps') }}
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Drop the command tag
+        uses: actions/github-script@0.4.0
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          # Cf. https://octokit.github.io/rest.js/
+          script: |
+            github.git.deleteRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.ref.replace('refs/', ''),
+              sha: context.sha,
+            })
+      - uses: actions/checkout@v1
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache/adndevtools
+          key: ${{ runner.os }}-adndevtools-${{ hashFiles('config/*.proj') }}
+          restore-keys: |
+            ${{ runner.os }}-adndevtools-
+      - name: Build frontend project, create push backend docker image to Azure registry
+        if: env.RELEASE_FRONTEND == true
+        run: ./gradlew dbs-web:jib
+
+      - name: Build backend project, create and push core backend docker image to Azure registry
+        if: env.RELEASE_BACKEND_CORE == true
+        run: ./gradlew dbs-core:jib
+
+      - name: build backend project, create and push en backend docker image to azure registry
+        if: env.RELEASE_BACKEND_EN == true
+        run: ./gradlew dbs-en:jib
+
+      - name: Build backend project, create and push aps backend docker image to Azure registry
+        if: env.RELEASE_BACKEND_APS == true
+        run: ./gradlew dbs-aps:jib
