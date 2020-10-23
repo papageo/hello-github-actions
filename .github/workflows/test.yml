@@ -23,14 +23,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: first step
-        run: echo "hello"
-      
-      - name: step 2
-        run: echo env.RELEASE_BACKEND_APS
-      - name: step 3
-        run: echo $env.RELEASE_BACKEND_APS
-      - name: step 4
+      - name: step 1 RELEASE_BACKEND_APS
         run: echo ${{ env.RELEASE_BACKEND_APS}}
-      - name: step 5
-        run: echo RELEASE_BACKEND_APS
+      - name: step 2 RELEASE_BACKEND_CORE
+        run: echo ${{ env.RELEASE_BACKEND_CORE}}
+      - name: step 3 RELEASE_BACKEND_EN
+        run: echo ${{ env.RELEASE_BACKEND_EN}}
+      - name: step 4 RELEASE_BACKEND
+        run: echo ${{ env.RELEASE_BACKEND}}
+      - name: step 5 RELEASE_FRONTEND
+        run: echo ${{ env.RELEASE_FRONTEND}}
+      
+      - name: step 1 RELEASE_BACKEND_APS
+        run: echo ${{ env.RELEASE_BACKEND_APS}}
+        if: ${{ env.RELEASE_BACKEND_APS}}
+      - name: step 2 RELEASE_BACKEND_CORE
+        run: echo ${{ env.RELEASE_BACKEND_CORE}}
+        if: ${{ env.RELEASE_BACKEND_CORE}}
+      - name: step 3 RELEASE_BACKEND_EN
+        run: echo ${{ env.RELEASE_BACKEND_EN}}
+        if: ${{ env.RELEASE_BACKEND_EN}}
+      - name: step 4 RELEASE_BACKEND
+        run: echo ${{ env.RELEASE_BACKEND}}
+        if: ${{ env.RELEASE_BACKEND }}
+      - name: step 5 RELEASE_FRONTEND
+        run: echo ${{ env.RELEASE_FRONTEND}}
+        if: ${{ env.RELEASE_FRONTEND}}
