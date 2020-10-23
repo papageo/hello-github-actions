@@ -46,7 +46,7 @@ jobs:
 
       - name: step 00 RELEASE_BACKEND_APS
         run: echo ${{ env.RELEASE_BACKEND_APS}} how can you run 00
-        if: env.RELEASE_BACKEND_APS == true
+        if: env.RELEASE_BACKEND_APS == 'true'
 #      - name: step 5 RELEASE_FRONTEND
 #        if: ${{ env.RELEASE_FRONTEND == true }}
 #        run: echo ${{ env.RELEASE_FRONTEND}} how can you run 1
