@@ -1,0 +1,31 @@
+name: test CI
+
+on:
+  push:
+    tags:
+      - 'release_backend_core'
+      - 'release_backend_en'
+      - 'release_backend_aps'
+      - 'release_backend'
+      - 'release_frontend'
+      - 'release'
+
+env:
+  RELEASE_FRONTEND: ${{ (github.ref == 'refs/tags/release') || (github.ref == 'refs/tags/release_frontend') }}
+  RELEASE_BACKEND_CORE: ${{ (github.ref == 'refs/tags/release') || (github.ref == 'refs/tags/release_backend') || (github.ref == 'refs/tags/release_backend_core') }}
+  RELEASE_BACKEND_EN: ${{ (github.ref == 'refs/tags/release') || (github.ref == 'refs/tags/release_backend') || (github.ref == 'refs/tags/release_backend_en') }}
+  RELEASE_BACKEND_APS: ${{ (github.ref == 'refs/tags/release') || (github.ref == 'refs/tags/release_backend') || (github.ref == 'refs/tags/release_backend_aps') }}
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: first step
+        run: echo "hello"
+      
+      - name: first step
+        run: echo "hello2" 
+        if: false
