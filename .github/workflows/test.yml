@@ -50,7 +50,7 @@ jobs:
         if: env.RELEASE_FRONTEND == true
         run: echo ${{ env.RELEASE_FRONTEND}} how can you run 00
       - name: step 5 RELEASE_FRONTEND
-        if: ${{ env.RELEASE_FRONTEND }}
+        if: ${{ env.RELEASE_FRONTEND == true }}
         run: echo ${{ env.RELEASE_FRONTEND}} how can you run 1
       - name: step 6 RELEASE_FRONTEND
         if: ${{ (env.RELEASE_FRONTEND) }}
