@@ -26,6 +26,11 @@ jobs:
       - name: first step
         run: echo "hello"
       
-      - name: first step
-        run: echo "hello2" 
-        if: false
+      - name: step 2
+        run: echo env.RELEASE_BACKEND_APS
+      - name: step 3
+        run: echo $env.RELEASE_BACKEND_APS
+      - name: step 4
+        run: echo ${{ env.RELEASE_BACKEND_APS}}
+      - name: step 5
+        run: echo RELEASE_BACKEND_APS
